@@ -1,0 +1,866 @@
+<html>
+ <head>
+  <meta name="viewport" content="width=device-width, initial-scale = 1.0,minimum-scale=1.0, maximum-scale=1.0,user-scalable=yes" />
+  <!--
+  <meta name="viewport" content="width=device-width, initial-scale = 1.0" />
+  -->
+  <meta charset="UTF-8" />
+  <script src="lib.js"></script>
+  <script src="sdimgs.js"></script>
+  <script src="logo.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<!-- toast grid -->
+    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+    <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" /> <!-- -->
+  <script>
+var data={"gameList":{"game":[]}};
+
+function replaceIImg(el, no){
+    var item = data.gameList.game[no-1];
+    //var sdimgpath = getSDImg(item.sdimage);
+    var video = item['video']
+                    ?`<video style="max-width:200px;max-height:200px;" loading="lazy" id="videoID" muted autoplay loop src="/share/roms/${system}/${item.video.decode().encode()}"></video>`
+                    :'';
+    if(video) el.outerHTML = video;
+    else      el.outerHTML = item.name;
+}
+
+var clickLstCnt = 0;
+function gLstMOver(cnt, obj){
+    if(cnt==clickLstCnt) return;
+    //obj.style.backgroundColor="#aaaaaa";
+    obj.className= "mouseover";
+}
+function gLstMOut(cnt, obj){
+    if(cnt==clickLstCnt) return;
+    obj.className= data.gameList.game[cnt].empty?"empty":"nowrap";
+}
+function gLstMClick(cnt, obj){
+    if(clickLstCnt!=-1) document.getElementById('gLstID'+clickLstCnt).className= data.gameList.game[clickLstCnt].empty?"empty":"nowrap";
+    obj.className="mouseclick";
+    var gameInfo = data.gameList.game[cnt];
+//    console.log('game:',gameInfo);
+    nameTD.innerText = gameInfo.name.decode();
+    descTD.innerText = gameInfo['desc']?gameInfo.desc.decode():'desc';
+    /*
+    langTD.innerText = gameInfo['lang']?gameInfo.lang[0]:'lang';
+    lastplayedTD.innerText = gameInfo['lastplayed']?gameInfo.lastplayed[0]:'lastplayed';
+    releasedateTD.innerText = gameInfo['releasedate']?gameInfo.releasedate[0]:'releasedate';
+    cheevosHashTD.innerText = gameInfo['cheevosHash']?gameInfo.cheevosHash[0]:'cheevosHash';
+    md5TD.innerText = gameInfo['md5']?gameInfo.md5[0]:'md5';
+    developerTD.innerText = gameInfo['developer']?gameInfo.developer[0]:'developer';
+    publisherTD.innerText = gameInfo['publisher']?gameInfo.publisher[0]:'publisher';
+    genreTD.innerText = gameInfo['genre']?gameInfo.genre[0].decode():'genre';
+    playcountTD.innerText = gameInfo['playcount']?gameInfo.playcount[0]:'playcount';
+    */
+//    imageTD.innerHTML = gameInfo['image']?'<img class="image" src="/share/roms/'+system+'/'+gameInfo.image[0]+'" />':'image';
+//    marqueeTD.innerHTML = gameInfo['marquee']?'<img class="marquee" src="/share/roms/'+system+'/'+gameInfo.marquee[0]+'" />':marqueeTD.innerHTML = 'marquee';
+
+    var imgTmp = '<img class="CLSNAME" title="TITLE" src="/share/roms/'+system+'/FILE" />';
+    var imgHtml = '';
+    ['boxart','boxback','cartridge','fanart','marquee','image','mix','screenshot', 'thumbnail','titleshot','wheel'].forEach(function(val,idx,data){
+        if(!gameInfo[val]) return;
+        imgHtml += '<p><span class="imgtitle">'+val+'</span>'
+        //      +  gameInfo[val]?imgTmp.replace('CLSNAME',val).replace('FILE',gameInfo[val][0]):val
+                +  imgTmp.replace('CLSNAME',val).replace('TITLE',val).replace('FILE',gameInfo[val].decode().encode())
+                +  '</p>';
+    });
+    //imageTD.innerHTML = imgHtml;
+    imagesTD.innerHTML = imgHtml;
+
+    //
+    var textHtml = '';
+    ['name', 'path', 'manual', 'genreid', 'genre',
+     'releasedate', 'developer', 'publisher', 'emulator', 'arcadesystemname',
+     'players', 'lang', 'region', 'core', 'family', 
+     'lastplayed', 'playcount', 'gametime','rating', 'sortname',
+     'adult', 'favorite', 'Actors', '_',
+     'cheevosHash', 'cheevosId', 'cloneof',
+     'crc32', 'hash', 'md5', 'mix',
+     'video', 'titleshot', 'marquee', 'image', 'thumbnail', 
+     'screenshot', 'temporary', 'boxart', 'boxback', 'cartridge', 
+     'wheel', 'map', 'fanart'/*, 'desc'*/].forEach(function(val,idx,data){
+        if(!gameInfo[val]) return;
+        textHtml += '<div><span class="txttitle">'+val+' : </span><span class="txtsub">'+gameInfo[val].decode()+'</span></div>';
+    });
+    textsTD.innerHTML = textHtml.replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/g,'$1-$2-$3 $4:$5:$6');
+
+    var fileSize = 0;
+    var basepath = `/share/roms/${system}/`;
+    try{ fileSize=gameInfo.pathsize.getSize() }catch(e){console.error(e);}
+    fileSize=gameInfo['pathsize']?gameInfo.pathsize.getSize():0;
+//    pathTD.innerHTML = gameInfo['path']?'<a href="'+basepath+gameInfo['path'][0]+'?download=1">Download</a> ('+fileSize+')':'Download';
+    pathTD.innerHTML = gameInfo['path']?'<a href="'+basepath+gameInfo['path']+'?download=1">'+( /^(?:.*\/(?=[^/]))?([^/]*)\/*$/.exec(gameInfo['path'].decode())[1] )+'</a> ('+fileSize+')':'Download';
+    fileSize=gameInfo['manualsize']?gameInfo.manualsize.getSize():0;
+    var manualHtml = ( gameInfo['manual']?'<a href="'+basepath+gameInfo['manual']+'?download=1">Manual</a> ('+fileSize+')':'manual' )
+                   + ( gameInfo['news']?' <a href="'+basepath+gameInfo['news']+'?download=1">News</a> ('+fileSize+')':' news' )
+    manualTD.innerHTML = manualHtml;
+    try{
+        if(gameInfo['video']){
+//            videoTD.innerHTML = '<video id="videoID" ' + (chkMute.checked?'muted ':'') + 'autoplay loop controls'
+            videoTD.innerHTML = '<video id="videoID" ' + (chkMute.checked?'muted ':'') + 'autoplay loop '
+                              + ' src="'+basepath+gameInfo.video.decode().encode()+'">'
+                              + '</video>';
+        } else {
+            videoTD.innerHTML = 'video';
+        }
+    }catch(e){console.log('ERROR :',e)}  
+    clickLstCnt = cnt;
+
+    // 상세 영역 스크롤 초기화
+    detailID.scrollTop=0;
+
+    //
+    var romInfoHtml = ` (No.${obj.cells[0].innerText}) `;
+    romInfoHtml += '<input type="button" value="XML" onclick="xmlDownload()"> <input type="button" value="ROMdata" onclick="xmlDownload(1)">';
+    romDtlID.innerHTML = romInfoHtml;
+
+    var feildHtml = ''
+    for(var key in gameInfo){
+        var v='';
+        try{
+            if(!(gameInfo[key]||false)) continue
+            if(typeof gameInfo[key]==='function') continue;
+            if(key==='uid') continue;
+            if(typeof gameInfo[key] === 'object'){
+                gameInfo[key] = JSON.stringify(gameInfo[key]);
+            } else if(Array.isArray(gameInfo[key])){
+                if(Array.isArray(gameInfo[key][0])){
+                    gameInfo[key] = JSON.stringify(gameInfo[key][0]);
+                }
+            }
+            if(gameInfo[key]||false) v = (''+gameInfo[key]).decode();
+            if(key=='desc') v = v.replace(/\n/g,'<br/>');
+            feildHtml += '<div>'
+                      +  '<span class="txttitle">'+key+' : </span>'
+                      +  '<span class="txtsub">'+v+'</span></div>';
+        }catch(e){
+            console.log(key, e)
+        }
+    }
+    fieldsTD.innerHTML = feildHtml;
+}
+
+var zipfile={};
+// Ajax로 xml생성, 다운로드
+// + 롬관련파일(이미지,동영상등) zip 파일로 묶어 다운로드
+function xmlDownload(zip){
+    zip = zip||0;
+    console.log(`zip: ${zip}`)
+    // 서버로 전송할 json data 생성
+    var gameInfo = data.gameList.game[clickLstCnt];
+    var jsonStrData = {};
+    for(key in gameInfo){
+        try{
+            if(key=='scrap'){
+                console.log(Array.isArray(gameInfo[key]), typeof gameInfo[key]);
+                jsonStrData[key] = gameInfo[key];
+            } else {
+                jsonStrData[key] = Array.isArray(gameInfo[key])?gameInfo[key][0].decode():gameInfo[key].decode();
+            }
+        }catch(e){
+            console.log(key, e)
+        }
+    }
+    var body = JSON.stringify({game:jsonStrData}).encode();
+
+    //호출 url 조립
+    var idx = selSdImgs.options.selectedIndex;
+    var sdImg = selSdImgs.options[idx].value.encode();
+    var _url=`/genxml?sid=${system}&sd=${sdImg}&zip=${zip}`;
+    Ajax({url:_url, body:body, type:"blob",
+          content:(xhr)=>{
+            console.log(xhr);
+//        console.log(xhr.response);
+            let disposition = xhr.getResponseHeader('Content-Disposition');
+            if (disposition && disposition.indexOf('attachment') !== -1) { 
+                let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/; 
+                let matches = filenameRegex.exec(disposition); 
+                if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, ''); 
+            } 
+            let blob = new Blob([xhr.response]); 
+            let link = document.createElement('a'); 
+            link.href = window.URL.createObjectURL(blob); 
+            link.download = decodeURI(filename); 
+            link.click(); 
+          },
+          exception:(xhr,err)=>{
+            console.log('EXCEPTION-xhr:',xhr);
+            console.log('EXCEPTION-error:',err);
+            let link = document.createElement('a'); 
+//            link.href = '/xml/'+zipfile.down+'?download=1&basedir=1'; 
+//            link.download = decodeURI(zipfile.name); 
+            link.href = '/xml/'+zipfile.down+'?download=1&basedir=1&name='+zipfile.name; 
+            link.click();
+          }
+    });
+}
+
+// 롬 목록 출력 콜백처리
+var getGameList_collback = (xhr)=>{
+    if(xhr) data = xhr.response.toJSON();
+
+    var imgTitle = ['image', 'marquee', 'thumbnail', 'screenshot', 'boxart', 'boxback', 'cartridge', 'fanart', 'mix', 'titleshot', 'wheel', 'map', 'bezel'];
+    if(chkMarquee.checked){ // marquee 우선처리
+        imgTitle[0] = 'marquee';
+        imgTitle[1] = 'image';
+    }
+
+    // 이미지 출력용 템플릿
+    // 이미지 많을때 보여지는게 느려져서 지연출력 처리함 loading="lazy"
+    // 이미지 없을때(404 Error) 타이틀로 대체함
+    //var imgTmp = '<img class="gamelist" title="TITLE" src="/share/roms/'+system+'/FILE" loading="lazy" onerror="this.onerror=null;this.outerHTML=\'REPLACE\';" /><span id="sTitID"></span>';
+    var imgTmp = '<img class="gamelist" title="TITLE" src="/share/roms/'+system+'/FILE" loading="lazy" onerror="this.onerror=null;this.outerHTML=\'REPLACE\';" /><span id="sTitID"></span>';
+    var videoTmp = '<video style="max-width:200px;max-height:200px;" loading="lazy" id="videoID" muted autoplay loop src="/share/roms/SYSTEM/VIDEO"></video>';
+
+        var gameListCount=1;
+        var romsCount = 0;
+        var html='<table border style="overflow:auto;">';
+        data.gameList.game.forEach(function(val, idx, data){
+            val.empty= eval(val.empty);
+            if(chkEmpty.checked) { // 없는롬제거 체크된경우
+                if(val.empty) return; // 없는롬 스킵함.
+            }
+            for(var key in val){
+                if(Array.isArray(val[key])) val[key] = val[key][0];
+            }
+            // 롬 목록 출력 조합
+            var classNm = val.empty?' clas s="empty"':'';
+            html+='<tr'+classNm+' id="gLstID'+idx+'"'
+                + ' onMouseOver="gLstMOver('+idx+',this)"'
+                + ' onMouseOut="gLstMOut('+idx+',this)"'
+                + ' onMouseDown="gLstMClick('+idx+',this)">';
+            html+='<td align="center">';
+            html+=gameListCount;
+            html+='</td>';
+            html+='<td class="gamelist">';
+            // Title
+
+            // Image
+            var isText = true;
+            for(var i=0; i<imgTitle.length; i++){
+                if(val[ imgTitle[i] ]){
+                    html+=imgTmp.replace('TITLE'  , val.name.decode()+'-'+imgTitle[i])
+                                .replace('FILE'   , val[ imgTitle[i] ].decode().encode() )
+                                .replace('REPLACE', val.name.decode().replace(/'/g,"\\'") );
+                    isText = false;
+                    break;
+                }
+            }
+            // 이미지가 없으면 제목으로
+            if(isText){
+                if(val['video']){ // 비디오 있으면 출력
+                    html+=videoTmp.replace('SYSTEM',    system)
+                                  .replace('VIDEO' ,val.video );
+                }else{
+                    html+=val.name.decode(); // 제목출력
+                }
+            }
+            html+='</td>';
+            html+='</tr>';
+            gameListCount++;
+            if(!val.empty) romsCount++;
+        });
+        //console.log(`gameListCount:${gameListCount}`)
+        if(gameListCount==1) html+='<tr><td style="text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">[[ 없음 ]]</td></tr>';
+        html+='</table>';
+        gamelistTD.innerHTML = html;
+
+		setTimeout(()=>{
+			gamelistTD.onscroll();
+		},1000);
+
+        // 롬개수 출력 : 존재하는롬/XML전체롬
+        //romCntID.innerText = ' (' + romsCount + '/' + data.gameList.game.length + ')';
+        romCntID.innerText = ` (${romsCount}/${data.gameList.game.length})`;
+        clearTimeout(romsValueTimer);
+
+        // 시작시 상세정보가 있는경우 처리
+        if(isStart){
+            setTimeout(()=>{
+                console.log(query.rom)
+                var idNo = data.gameList.game.findIndex(o=>{return decodeURIComponent(o.path)==decodeURIComponent(query.rom)});
+                var romObj = document.querySelector('#gLstID'+idNo) //document.querySelect("#gLstID"+323);
+                gamelistTD.scrollTop=romObj.offsetTop;
+                romObj.onmousedown();
+                isStart=false;
+            },1000);
+        }
+}
+//롬 목록 출력
+function getGameList(){
+    if(!clickSysCnt) return;
+    var idx = selSdImgs.options.selectedIndex;
+    var sdImg = selSdImgs.options[idx].value.encode();
+    var _url=`/system?sid=${system}&sd=${sdImg}`;
+    if(chkUseDB.checked) _url+= '&db=1';
+    gamelistTD.innerHTML = '<progress value="0" max="100" id="romsID"></progress><Br>목록 생성중...';
+    Ajax({url:_url, content:getGameList_collback, exception:evt=>{console.log(evt)}});
+
+//    gamelistTD.innerHTML = '<progress value="0" max="100" id="romsID"></progress>';
+
+// 느려서 폐기됨.
+//    socket.emit('message', `/system?sid=${system}&sd=${sdImg}` ); // 데이타 보내기 (소켓명, 보낼 데이타)
+}
+var clickSysCnt = 0; // 클릭 처리된 위치 기억
+// 시스템목록 마우스오버 이벤트처리
+function gSysMOver(cnt, obj){
+    if(cnt==clickSysCnt) return;
+    obj.className="mouseover";
+}
+// 시스템목록 마우스아웃 이벤트처리
+function gSysMOut(cnt, obj){
+    if(cnt==clickSysCnt) return;
+    obj.className="nowrap";
+}
+// 시스템목록 클릭 이벤트 처리
+function gSysMClick(cnt, obj){
+    if(clickSysCnt) document.getElementById('gSysID'+clickSysCnt).className="nowrap";
+    obj.className="mouseclick";
+    clickSysCnt = cnt; // 시스템 선택 기억
+    clickLstCnt = -1; // 게임목록 선택위치 초기화
+    // ----
+    system = systems[cnt-1].name;
+    //getGameList();
+    setTimeout( getGameList, 10 );
+    gamelistTD.innerHTML = '로딩중...';
+    systemID.innerHTML = ` [${system}]`;
+    romCntID.innerText = '';
+    // ----
+}
+
+var systems = [];
+var system = '';
+function getSystems(sdImg){
+    //url, content, exception
+    url = '/systems?sd='+sdImg.encode();
+    if(chkUseDB.checked) url+= '&db=1';
+    console.log('system url:',url);
+    Ajax({url:url, content:(rs)=>{
+        /** /
+        console.log( rs );
+        console.log( rs.response );
+        console.log( rs.response.toJSON() );
+        console.log( JSON.parse(rs.response) );
+        /**/
+    	var systemCount=1;
+        var romsTotal=0;
+        systems = rs.response.toJSON();
+	    var html='<table border style="overflow:auto;">';
+        systems.forEach((val,idx,data)=>{
+            html+='<tr id="gSysID'+systemCount+'"'
+                + ' onMouseOver="gSysMOver('+systemCount+',this)"'
+                + ' onMouseOut="gSysMOut('+systemCount+',this)"'
+                + ' onMouseDown="gSysMClick('+systemCount+',this)">';
+            html+='<td align="center">';
+            html+=systemCount;
+            html+='</td>';
+            html+='<td class="nowrap">';
+//            html+=val.name + ' ['+val.count.format()+']';
+            html+='<img class="systemlogo" loading="lazy" title="'+val.name+'" src="' + themtBasePath + systemLogo[val.name] + '" /> ['+val.count.format()+']';
+            html+='</td>';
+            html+='</tr>';
+
+            systemCount++;
+            romsTotal+=val.count;
+        })
+        html+='</table>';
+        systemTD.innerHTML = html;
+        romsTotalID.innerHTML = ' ['+romsTotal.format()+']';
+
+        if(isStart){
+            setTimeout(()=>{
+                //document.querySelector('#gSysID'+(systems.findIndex(o=>{return o.name==query.sid})+1)).onmousedown();
+                var obj = document.querySelector('#gSysID'+(systems.findIndex(o=>{return o.name==query.sid})+1));
+                obj.onmousedown();
+                systemTD.scrollTop = obj.offsetTop;
+            },1000);
+        }
+    }});
+    clickSysCnt = 0; // 시스템 선택위치 초기화
+    clickLstCnt = -1; // 게임목록 선택위치 초기화
+}
+
+var romsValueTimer;
+function romsValue(){
+    romsID.value+=6;
+    romsValueTimer = setTimeout(romsValue,22);
+}
+
+// SD이미지 선택 박스 onchange 이벤트 핸들러
+function selSdImgsEventHandler(evt){
+        var idx = selSdImgs.options.selectedIndex;
+        console.log('SD Index:',idx);
+        if(idx){
+            var op = selSdImgs.options[idx];
+            systemTD.innerHTML = '<img src="/img/0013.gif" /><br>로딩중...';
+            getSystems(op.value);
+        }else{
+            systemTD.innerHTML = '롬 이미지를<Br>선택해 주세요.';
+        }
+        systemID.innerHTML = '';
+}
+function linkDivToggle(){
+    linkDiv.style.display = linkDiv.style.display?'':'none';
+}
+
+var query={};
+var isStart = false;
+window.addEventListener('load',()=>{
+    // SD이미지 선택 이벤트 처리
+    selSdImgs.options.length=1;
+    sdImages.forEach(function(val){
+        selSdImgs.options.add(new Option(val.alias, val.path));
+    });
+    selSdImgs.addEventListener('change',selSdImgsEventHandler);
+    // Muted 이벤트 처리
+    chkMute.addEventListener('click',(evt)=>{
+        chkMute.checked = !chkMute.checked;
+        videoID.muted = chkMute.checked;
+    });
+    tagMuteId.addEventListener('click',(evt)=>{
+        chkMute.checked = !chkMute.checked;
+        videoID.muted = chkMute.checked;
+    });
+    // 없는롬제거 이벤트 처리
+    tagEmptyId.addEventListener('click',(evt)=>{
+        chkEmpty.checked = !chkEmpty.checked;
+        gamelistTD.innerHTML = '목록 생성중...';
+        getGameList_collback();
+    });
+    chkEmpty.addEventListener('change',(evt)=>{
+        chkEmpty.checked = !chkEmpty.checked;
+        gamelistTD.innerHTML = '목록 생성중...';
+        getGameList_collback();
+    });
+    // image <=> mqrquee 토글 이벤트 처리
+    tagMarqueId.addEventListener('click',(evt)=>{
+        chkMarquee.checked = !chkMarquee.checked;
+        gamelistTD.innerHTML = '목록 생성중...';
+        getGameList_collback();
+    });
+    chkMarquee.addEventListener('change',(evt)=>{
+        chkMarquee.checked = !chkMarquee.checked;
+        gamelistTD.innerHTML = '목록 생성중...';
+        getGameList_collback();
+    });
+    // 모든 항목 출력 토글 이벤트 처리
+    tagFieldsId.addEventListener('click',(evt)=>{
+        chkFields.checked = !chkFields.checked;
+        //fieldsTB.style.display = (fieldsTB.style.display == 'none'?'':'none');
+        fieldsTB.isShow()?fieldsTB.hide():fieldsTB.show();
+    });
+    chkFields.addEventListener('click',(evt)=>{
+        evt.target.checked = !evt.target.checked;
+        // 이벤트 버블로 주석 처리함
+        //chkFields.checked = !chkFields.checked;
+    });
+    // DB사용 토글
+    tagUseDBId.addEventListener('click',(evt)=>{
+        chkUseDB.checked = !chkUseDB.checked;
+    });
+    chkUseDB.addEventListener('click',(evt)=>{
+        evt.target.checked = !evt.target.checked;
+        // 이벤트 버블로 주석 처리함
+        //chkUseDB.checked = !chkUseDB.checked;
+    });
+
+    로딩중.style.display='none';
+
+    try{
+        query = window.location.href.getQuery();
+        query.sd=decodeURIComponent(query.sd);
+        console.log(query);
+        if(query.sd){
+            isStart = true;
+            chkUseDB.checked=true;
+            selSdImgs.value = sdImages[sdImages.findIndex(o=>{return o.path.indexOf('/'+query.sd)>0})].path;
+            selSdImgsEventHandler();
+        }
+    }catch(e){}
+});
+</script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+//---------------------------------------------------------------------------//
+// 소켓
+//---------------------------------------------------------------------------//
+/**/
+var socket = io.connect();
+window.addEventListener('load',()=>{
+    socket.on('message',(msg)=>{
+        console.log(msg);
+    });
+    socket.on('zipdownload',(msg)=>{
+        console.log('zipdownload:',msg);
+        zipfile = msg.toJSON();
+    });
+    socket.on('gamelistMax',(msg)=>{
+        try{
+            console.log('gamelistMax:',msg);
+            romsID.max = msg;
+            romsValue();
+        }catch(e){}
+    });
+    socket.on('gamelistCurrent',(msg)=>{
+        console.log('gamelistCurrent:',msg);
+        romsID.value = msg;
+    });
+    socket.on('gamelist',(msg)=>{
+        //console.log('gamelist:',msg);
+        data = msg.toJSON();
+        getGameList_collback();
+    });
+});
+/*
+var cnt=0;
+function msgSend(){
+//    cnt++;
+//    socket.emit('message', `메시지 전송: ${cnt}` ); // 데이타 보내기 (소켓명, 보낼 데이타)
+    gamelistTD.innerHTML = '<progress value="0" max="100" id="romsID"></progress>';
+    var sdImg = 'D:/Batocera';
+    var system = 'nes';
+    socket.emit('message', `/system?sid=${system}&sd=${sdImg}` ); // 데이타 보내기 (소켓명, 보낼 데이타)
+};
+//function
+/**/
+</script>
+<style>
+    body {
+        /**/
+        overflow:hidden;
+        /**/
+        background-color: #444444;
+        color:#aaaaaa;
+    }
+    table, th, td {
+        /*border:1px solid black;*/
+        /*padding:0px;*/
+        border-spacing:0px 0px;
+        border-collapse:collapse;
+        border-color:#555555;
+    }
+    img, video {
+        max-width:100%;
+    }
+    img.systemlogo {
+        max-width:150px;
+        max-height:50px;
+    }
+    img.gamelist {
+        max-width:200px;
+        max-height:200px;
+    }
+    .nowrap {
+        text-overflow:ellipsis;
+        overflow:hidden;
+        white-space:nowrap;
+    }
+    TR.empty {
+        border: 2px #272727 solid;
+        background-color:black;
+        color:#888888;
+    }
+    TR.empty img {
+        opacity: 0.5;
+    }
+    TR.mouseover {
+        background-color:#aaaaaa;
+        border: 2px #666666 solid;
+        color:#777777;
+    }
+    TR.mouseover img.systemlogo {
+    /**/
+        max-width:148px;
+    /**/
+        max-height:48px;
+    /**/
+    }
+    TR.mouseover  img.gamelist {
+        max-width:198px;
+        max-height:198px;
+    }
+    TR.mouseclick {
+        background-color:#757575;
+        border: 2px #ababab solid;
+        color:;
+    }
+    TR.mouseclick img.systemlogo {
+        max-width:148px;
+        max-height:48px;
+    }
+    TR.mouseclick  img.gamelist {
+        max-width:198px;
+        max-height:198px;
+    }
+
+    TR.nowrap {
+        text-overflow:ellipsis;
+        overflow:hidden;
+        white-space:nowrap;
+        background-color:;
+        border:;
+        color:;
+    }
+
+	TD.gamelist {
+		text-overflow:ellipsis;
+		overflow:hidden;
+		white-space:nowrap;
+		/*content-visibility: auto;*/
+	}
+
+    #nameTD {
+        font-weight: bold;
+        font-size:20pt;
+        padding:0 10pt 0 10pt;
+        height:100%;
+        overflow:auto;
+        white-space:nowrap;
+    }
+    #descTD {
+        /*border:1px green solid;*/
+        /*width:600px;*/
+        /*width:800px;*/
+        /*width:100%;*/
+        /*overflow:auto;*/
+    }
+    span.imgtitle {
+        font-weight: bold;
+        width:100px;
+    }
+    span.txttitle {
+        font-weight: bold;
+    }
+
+    #tagMuteId, #tagEmptyId, #tagMarqueId, #tagFieldsId {
+        cursor: pointer;
+    }
+    a {color:gray;}
+    div#linkDiv {
+        position: absolute;
+        right: 3;
+        top: 50;
+        width: 130px;
+        background-color: #333;
+    }
+    div#linkDiv div{
+        height:30px;
+        margin-top:5px;
+        margin-left:5px;
+        cursor:point;
+    }
+    span#tagLinkId button {
+        position: absolute;
+        right: 10;
+    }
+	/*.tui-grid-content-area {width:150px;}*/
+</style>
+</head>
+<body>
+<table height="100%" border>
+ <tr style="height:20px;">
+  <td colSpan="3">
+    <select name="selSdImgs" id="selSdImgs">
+        <option value="선택" selected>SD 이미지 선택
+        <option value="">
+    </select><span id="romsTotalID"></span><img src="/img/0013.gif" id='로딩중' />
+    <span id="tagMuteId"><input type="checkbox" name="chkMute" id="chkMute" checked />Mute</span>
+    <span id="tagEmptyId"><input type="checkbox" name="chkEmpty" id="chkEmpty" checked/>없는롬제거</span>
+    <span id="tagMarqueId"><input type="checkbox" name="chkMarquee" id="chkMarquee" />Marquee</span>
+    <span id="tagFieldsId"><input type="checkbox" name="chkFields" id="chkFields" />Fields</span>
+    <span id="tagUseDBId"><input type="checkbox" name="chkUseDB" id="chkUseDB" />DB사용</span>
+    <span id="tagLinkId"><button onclick="linkDivToggle();">Links</button></span>
+  </td>
+ </tr>
+ <tr style="height:20px;">
+  <th><a onclick="selSdImgsEventHandler()">시스템</a><span id="systemID"></span><!-- <span id="romDtlID"></span> --></th>
+  <th>목록<span id="romCntID"></span></th>
+  <th>상세<span id="romDtlID"></span></th>
+ </tr>
+ <tr>
+  <td><div id="systemTD" style="height:100%;overflow:auto;min-width:100px;"></div></td>
+  <td valign="top"><!--<div id="testGrid">testGrid</div><div id="gmelistGridDiv" style="width:200px">gmelistGridDiv</div>--><div id="gamelistTD" style="height:100%;overflow:auto;min-width:100px;" class="nowrap"></div></td>
+  <td valign="Top">
+   <div id="detailID" style="height:100%;overflow:auto;" class="nowrap">
+    <table cellspacing=0 cellpadding=0>
+     <tr>
+      <td>
+       <table border>
+        <tr>
+         <th class="nowrap">타이틀</th>
+         <td><span id="nameTD">...</span><Br>
+             &nbsp;&nbsp;&nbsp;<span id="pathTD">rom</span>
+             &nbsp;&nbsp;&nbsp;<span id="manualTD">manual</span></td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <table border id="videoTB">
+        <tr>
+         <th>video</th>
+         <td id="videoTD">video</td>
+        </tr>
+       </table>
+       <table border>
+        <tr>
+         <td>images</td>
+         <td id="imagesTD">images</td>
+        </tr>
+       </table>
+       <table border>
+        <tr>
+         <td>texts</td>
+         <td id="textsTD" class="nowrap">texts</td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+     <tr>
+      <td><table border><tr><th>desc</th><td id="descTD" style="height:100%;overflow:auto;">desc</td></tr></table></td>
+     </tr>
+     <tr>
+      <td>
+       <table border id="fieldsTB" style="display:none;">
+        <tr>
+         <td>fields</td>
+         <td id="fieldsTD" class="fields">fields</td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <table border id="xmlTB" style="display:none;">
+        <tr>
+         <td>fields</td>
+         <td id="xmlTD" class="fields">fields</td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+     <tr>
+      <td class="bottom"><hr></td>
+     </tr>
+    </table>
+   </div>
+  </td>
+ </tr>
+</table>
+<div id="linkDiv" style="display:none;">
+  <div><a href="/">gamelist.xml조회</a></div>
+  <div><a href="/file">롬파일명검색</a></div>
+  <div><a href="/rom">롬타이틀명검색</a></div>
+</div>
+
+<div id="debug" style="border:1px red dotted;"></div>
+</body>
+
+<script>
+var gamelistHtml=[];
+window.addEventListener('load',()=>{
+	gamelistTD.onscroll = function(){
+		var gamelistTDTop = $('#gamelistTD').offset().top;
+		var gamelistTDHeight = gamelistTD.offsetHeight + gamelistTDTop;
+//		var gamelistTDHeight = gamelistTD.offsetHeight - gamelistTDTop;
+		document.querySelectorAll('TD.gamelist').forEach((v,i,d)=>{
+			var top = $(v).offset().top + gamelistTDTop;
+//			var top = $(v).offset().top - gamelistTDTop;
+			if(top < 0 || top > gamelistTDHeight){
+				if(top < 0){
+					console.log('Min index', i);
+				}
+				if(top > gamelistTDHeight){
+					console.log('Max index', i);
+				}
+				v.style.height = v.offsetHeight;
+				//if(v.innerHTML) gamelistHtml[i] = String(v.innerHTML);
+				//v.innerHTML = '';
+				v.style.visibility='hidden';
+			} else {
+				v.style.visibility='';
+			}
+		});
+		/*
+		$('.gamelist').each((index,item)=>{
+			if(index >= $('.gamelist').length) return;
+			var i = index;
+			item = $('.gamelist')[index]; // 개체 재할당
+			var top = $(item).offset().top + gamelistTDTop;
+			//var top = $($('.gamelist')[index+1]).offset().top;
+			if(top < 0 || top > gamelistTDHeight){
+				if(top < 0){
+					//i=index-1;
+					console.log('Min index', i);
+//console.log(item,item.innerHTML, $('.gamelist')[index], $('.gamelist')[index].innerHTML);
+//console.log($('.gamelist')[index], $('.gamelist')[index].innerHTML);
+				}
+				if(top > gamelistTDHeight){
+					i=index;
+					console.log('Max index', i);
+				}
+
+				//$('.gamelist')[i].style.height = $('.gamelist')[i].offsetHeight;
+				//$('.gamelist')[i].html = $('.gamelist')[i].innerHTML;
+				//$('.gamelist')[i].innerHTML = '';
+//				try
+				item.style.height = item.offsetHeight;
+				//item.setAttribute('html', String(item.innerHTML));
+				//if(item.innerHTML) data.gameList.game[index]['html'] = String(item.innerHTML);
+				if(item.innerHTML) gamelistHtml[index] = String(item.innerHTML);
+				item.innerHTML = '';
+
+			} //else {
+				//if($('.gamelist')[i].html)
+				//	$('.gamelist')[i].innerHTML = $('.gamelist')[i].html;
+				//if(item.html) item.innerHTML = item.html;
+				//if(data.gameList.game[index]['html']) item.innerHTML = data.gameList.game[index]['html'];
+				if(gamelistHtml[index]) item.innerHTML = gamelistHtml[index];
+			//}
+		})
+		/*
+		var i;
+		i=0;
+		console.log(i,'offset()',$($('.gamelist')[i+1]).offset(),'height',$('.gamelist')[i+1].offsetHeight, $($('.gamelist')[i]).offset().top+$('.gamelist')[i].offsetHeight-gamelistTDTop, this.scrollTop);
+		i=1;
+		console.log(i,'offset()',$($('.gamelist')[i]).offset(),'height',$('.gamelist')[i].offsetHeight, $($('.gamelist')[i]).offset().top+$('.gamelist')[i].offsetHeight-gamelistTDTop, this.scrollTop);
+
+//		var td= $($('.gamelist')[0]);
+//		console.log('offset()',$($('.gamelist')[0]).offset()
+		*/
+	}
+});
+</script>
+<!--<script src="./test.js"></script>
+<script src="./testGrid.js"></script>-- >
+<script src="./gamelistGrid.js"></script>
+<script>
+let gamelistGrid;
+window.addEventListener('load',()=>{
+    // 그리드 설정
+    gamelistGrid = initGrid();
+
+    // 샘플 데이터
+    const sampleData = [
+        {
+            image: '.%2Fimages%2F1942-image.png',
+        },
+        {
+            image: '/share/roms/ps2/.%2Fimages%2FGolden%20Axe%20-%20PS2.png',
+        },
+        {
+            image: '/share/roms/atari7800/.%2Fimages%2FAce%20of%20Aces%20(USA)-image.png',
+        },
+        {
+            image: 'http://125.184.251.238:10086/share/roms/atari7800/.%2Fimages%2FAlien%20Brigade%20(USA)-image.png',
+        }
+    ];
+
+    // 그리드에 데이터 넣기(출력)
+    gamelistGrid.resetData(sampleData);
+});
+</script>-->
+</html>

@@ -1,0 +1,715 @@
+<html>
+  <head>
+    <title>롬목록 조회</title>
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0,minimum-scale=1.0, maximum-scale=1.0,user-scalable=yes" />
+    <meta charset="UTF-8" />
+    <style>
+.floating_header.fade_in {
+    top: 0;
+}
+.floating_header {
+    position: fixed;
+    top: -47px;
+    left: 0;
+    right: 0;
+    height: 46px;
+    background: #fff;
+    border-bottom: 1px solid #c2c2c2;
+    z-index: 2000;
+    transition: all .3s cubic-bezier(.215,.61,.355,1);
+}
+.floating_header .inner {
+    position: relative;
+    padding: 14px 0 14px 20px;
+}
+.floating_header .inner:after, .floating_bottom .inner:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+.floating_header .area_search {
+    position: absolute;
+    top: 5px;
+    /*right: 46px;*/
+}
+.floating_header .search_box .label_text_box {
+    position: absolute;
+    top: 0;
+    left: 9px;
+    font-size: 13px;
+    line-height: 34px;
+    letter-spacing: -.8px;
+    color: #999;
+    cursor: text;
+}
+.floating_header .search_box .btn_search {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 14px;
+    padding: 0 10px;
+    background: #fff;
+}
+a:link {
+    text-decoration: none;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+a:-webkit-any-link {
+    cursor: pointer;
+    text-decoration: underline;
+}
+body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select {
+    margin: 0;
+    padding: 0;
+}
+form {
+    display: block;
+    margin-top: 0em;
+    margin-block-end: 1em;
+}
+.floating_header .area_search fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.blind {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+}
+.floating_header .search_box .text_box {
+    width: 199px;
+    height: 34px;
+    /*margin: 0 34px 0 0;*/
+    padding: 0;
+    font-size: 13px;
+    color: #000;
+    text-indent: 10px;
+    outline: 0;
+    cursor: text;
+    border: 0;
+}
+.floating_header .search_box .icon_search {
+    background-position: -91px -4px;
+    width: 16px;
+    height: 16px;
+    margin-top: 9px;
+}
+.sp_blog {
+    background-image: url(https://ssl.pstatic.net/static/blog/sp_pcblog9.png);
+    background-image: url(https://ssl.pstatic.net/static/blog/sp_pcblog9.svg),none;
+    vertical-align: middle;
+}
+.sp_blog, .floating_header .area_logo .link_naver, .floating_header .area_logo .link_blog, .floating_header .area_logo .icon_bar {
+    display: inline-block;
+    overflow: hidden;
+    font-size: 1px;
+    line-height: 100px;
+}
+i {
+    font-style: italic;
+}
+a:link {
+    text-decoration: none;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+html body, html button, html input, html select, html table, html textarea {
+    font-family: Helvetica-Light,"나눔고딕",nanumgothic,AppleSDGothicNeo,"malgun gothic","맑은 고딕",sans-serif;
+}
+input[type="text" i] {
+    padding-block: 1px;
+    padding-inline: 2px;
+}
+input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" i]) {
+}
+user agent stylesheet
+input {
+    font-style: ;
+    font-variant-ligatures: ;
+    font-variant-caps: ;
+    font-variant-numeric: ;
+    font-variant-east-asian: ;
+    font-variant-alternates: ;
+    font-variant-position: ;
+    font-weight: ;
+    font-stretch: ;
+    font-size: ;
+    font-family: ;
+    font-optical-sizing: ;
+    font-kerning: ;
+    font-feature-settings: ;
+    font-variation-settings: ;
+    text-rendering: auto;
+    color: fieldtext;
+    letter-spacing: normal;
+    word-spacing: normal;
+    line-height: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    appearance: auto;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+    background-color: field;
+    writing-mode: horizontal-tb !important;
+    margin: 0em;
+    padding: 1px 0px;
+    border-width: 2px;
+    border-style: inset;
+    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+    border-image: initial;
+    padding-block: 1px;
+    padding-inline: 2px;
+}
+.floating_header .search_box {
+    border: 1px solid #e0e0e0;
+    position: relative;
+    font-family: "나눔고딕",NanumGothic,NanumGothicWebFont,"Malgun Gothic","맑은 고딕",Dotum,"돋움",Helvetica,"Apple SD Gothic Neo",sans-serif;
+    transition: all .2s cubic-bezier(.215,.61,.355,1);
+}
+.floating_header .area_category {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 46px;
+    height: 46px;
+}
+.floating_header .btn_category {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.floating_header .icon_category_group {
+    display: inline-block;
+    width: 14px;
+    margin-top: 14px;
+    text-align: left;
+}
+.floating_header .btn_category {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.floating_header .icon_category_group .line:nth-child(1) {
+    transform: rotate(0) translate(0,0);
+    -ms-transform: rotate(0) translate(0,0);
+}
+.floating_header .icon_category_group .line {
+    display: inline-block;
+    margin-top: 3px;
+    width: 14px;
+    height: 2px;
+    background: #555;
+    transform-origin: center;
+    transition: all .2s cubic-bezier(.215,.61,.355,1);
+}
+.floating_header .autocomplete_layer {
+    overflow: hidden;
+    position: absolute;
+    top: 34px;
+    left: -1px;
+    width: 233px;
+    max-height: 317px;
+    border: 1px solid #aaa;
+    border-top: 0;
+}
+/*****************************************************/
+#contentLoaddingImg {
+    width:100%;
+    height:100%;
+    position: relative;
+}
+#contentLoaddingImg img{
+    position:fixed;
+    /*중앙 정렬*/
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+}
+#listTB td div, #bodyDiv table tr td div {
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space:nowrap;
+    line-height:110%;
+}
+
+input#totalID {
+    right: 50px;
+    position: absolute;
+    border: 0;
+    width: 70px;
+    text-align: right;
+}
+#empty {
+    margin-right: 34px;
+
+}
+    body {
+        /** /
+        overflow:hidden;
+        /**/
+        background-color: #444444;
+        color:#aaaaaa;
+    }
+    div#bodyDiv table, div#bodyDiv th, div#bodyDiv td {
+        /*border:1px solid black;*/
+        /*padding:0px;*/
+        border-spacing:0px 0px;
+        border-collapse:collapse;
+        border-color:#383838;
+        height:30px;
+    }
+    div#bodyDiv table, div#bodyDiv th{
+        position: sticky;
+        top: 46px;
+        background-color: #444;
+        height:23px;
+    }
+    div#bodyDiv table tr:nth-child(even) {background: #444}
+    div#bodyDiv table tr:nth-child(odd) {background: #555}
+    div#bodyDiv table tr:hover { background-color: #777; }
+    a {
+        color:#aaaaaa;
+    }
+    div#bodyDiv td video {
+        max-width:200px;
+        max-height:200px;
+    }
+    div#linkDiv {
+        position: fixed;
+        right: 3;
+        top: 50;
+        width: 130px;
+        background-color: #333;
+    }
+    div#linkDiv div{
+        height:30px;
+        margin-top:5px;
+        margin-left:5px;
+        cursor:point;
+    }
+    select#sdimage {max-width:150px;}
+    select#empty {max-width:100px;}
+    img.system_img{
+        max-width:150px;
+        max-height:50px;
+        float:left;
+        margin-right:3px;
+        background-color:#999999;
+        border-radius: 5px;
+        border:2px #bbbbbb solid;
+    }
+    </style>
+    <script src="lib.js"></script>
+    <script src="sdimgs.js"></script>
+    <script src="logo.js"></script>
+    <script>
+var data={};
+/*
+var fields=['uid', 'sdimage', 'system', 'empty', 'path',
+            'name', 'video', 'videosize', 'marquee', 'marqueesize',
+            'image', 'imagesize', 'thumbnail', 'thumbnailsize', 'fanart',
+            'fanartsize', 'mix', 'mixsize', 'screenshot', 'screenshotsize',
+            'cartridge', 'cartridgesize', 'boxart', 'boxartsize', 'wheel',
+            'wheelsize', 'bezel', 'bezelsize', 'map', 'mapsize',
+            'boxback', 'boxbacksize', 'titleshot', 'titleshotsize', 'cover',
+            'coversize', 'manual', 'manualsize', 'news', 'newssize',
+            'genreid', 'genre', 'players', 'developer', 'publisher',
+            'lang', 'region', 'rating', 'releasedate', 'family',
+            'cloneof', 'arcadesystemname', 'core', 'emulator',
+            'playcount', 'lastplayed', 'gametime', 'sortname', 'temporary',
+            'Actors', 'favorite', 'hidden', 'adult', 'kidgame',
+            'cheevosId', 'cheevosHash', 'md5', 'hash', 'crc32',
+            '_', '_self', 'scrap', 'desc', 'pathsize'];
+*/
+var fields=['empty', 'system', 'name', 'pathsize', 'path', 'sdimage',
+            'genre', 'developer', 'publisher', 'lang', 'region'
+            /*
+            , 'marquee', 'image', 'video', 'family'
+            */
+            ];
+
+// ajax로부터 json 추출
+function getJSON(evt){
+    try{
+        return evt.target.responseText.toJSON();
+    }catch(e){
+        return [];
+    }
+}
+
+// Text 로 구성된 롬정보 출력
+function putListText(){
+    if(!data.length) {
+        bodyDiv.innerHTML = '결과없음';
+        return;
+    }
+    totalID.value = data.length.format();
+    var html = '<table border id="listTB">';
+    // header
+    html += '<tr>';
+    html += '<th>No.</th>';
+    fields.forEach(val => {
+        html += `<th>${val}</th>`;
+    })
+    html += '</tr>';
+
+    var aTmp = '<a target="romdetail" href="/?sd=SDIMG&sid=SYSTEM&rom=ROM">TITLE</a>';
+    data.forEach((item, idx)=>{
+        html += '<tr>';
+        var anchor = aTmp.replace('SDIMG' , item.sdimage)
+                         .replace('SYSTEM', item.system)
+                         .replace('ROM'   , item.path)
+        html += `<td align="center">${(idx+1)}</td>`;
+        fields.forEach(key => {
+            var val = (key=='pathsize')?item[key].format():item[key]||'';
+            var content = anchor.replace('TITLE', val);
+            var align=(key=='pathsize')?' align="right"':'';
+            html += `<td${align}>${content}</td>`;
+        })
+        html += '</tr>';
+    });
+    html+='</table>';
+    bodyDiv.innerHTML = html;
+}
+
+// SD 이미지 경로 추출용
+function getSDImg(imgname){
+    return sdImages[sdImages.findIndex(o=>{return o.path.indexOf('/'+imgname)>-1;})].path.encode();
+}
+
+// 이미지 에러시 비디오로 변환
+function replaceIImg(el, no){
+    var item = data[no-1];
+    var sdimgpath = getSDImg(item.sdimage);
+    var video = item['video']
+                    ?`<video loading="lazy" id="videoID" muted autoplay loop src="/share/roms/${item.system}/${item.video.encode()}?sd=${sdimgpath}"></video>`
+                    :'';
+    if(video) el.outerHTML = video;
+    else      el.src= `/share/roms/${item.system}/${item.image}?sd=${sdimgpath}`;
+}
+
+var dataPageLng = 20;
+var dataCurrentIdx = 0;
+var dataMaxIndex = 0;
+var isDataPrtEnd = false;
+function lazyPrt(){
+    var item = data[dataCurrentIdx];
+    var idx  = dataCurrentIdx;
+        var sdimgpath = getSDImg(item.sdimage);
+        var releasedate;
+        try{
+            releasedate = item.releasedate
+                         .replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/g,'$1-$2-$3 $4:$5:$6')
+                         .replace(' 00:00:00','')
+                         .replace('-01-01','');
+        }catch(e){
+            releasedate = item.releasedate;
+        }
+        var smarquee = item.marquee||item.screenshot||item.mix||item.image;
+        //var simage = smarquee==item.image?'':item.image;
+        var simage = !item.video?item.image:'';
+//        if(smarquee==item.image) console.log(idx+1, smarquee, item.image, simage)
+//        var newRow = listTB.insertRow(); // 테이블에 한줄 추가
+//        newRow.innerHTML = rominfotemplatebody.innerText // 추가된 줄에 html 코드 출력(템플릿 읽어, 변환하여 출력)
+        // 테이블에 한줄 추가하여, 추가된 줄에 html 코드 출력(템플릿 읽어, 변환후 출력)
+        listTB.insertRow().innerHTML = rominfotemplatebody.innerText
+                           .replace(/\${no}/g,idx+1)
+                           .replace(/\${marquee}/g, smarquee)
+                           .replace(/\${image}/g, simage)
+                           .replace(/\${name}/g, item.name)
+                           .replace(/\${sdimg}/g, item.sdimage)
+                           .replace(/\${sdimgpath}/g, sdimgpath)
+                           .replace(/\${system}/g, item.system)
+                           .replace(/\${path}/g, item.path)
+                           .replace(/\${pathsize}/g, item.pathsize.getSize())
+                           .replace(/\${genre}/g, item.genre||'')
+                           .replace(/\${developer}/g, item.developer||'')
+                           .replace(/\${publisher}/g, item.publisher||'')
+                           .replace(/\${releasedate}/g, releasedate||'')
+                           .replace(/\${players}/g, item.players||'')
+                           .replace(/\${region}/g, item.region||'')
+                           .replace(/\${lang}/g, item.lang||'')
+                           .replace(/\${logo}/g, themtBasePath+systemLogo[item.system])
+                           .replace(/\${empty}/g, item.empty=='false'?'checked':'')
+                           ;
+    dataCurrentIdx++; // 출력 index 증가
+    totalID.value = dataCurrentIdx.format()+' / '+data.length.format();
+    if(dataCurrentIdx>dataMaxIndex){ // 읽어온 값보다 크면 전체 출력 완료 설정
+        isDataPrtEnd=true; // 전체 출력 함.
+    }
+}
+
+function lazyRun(){
+  var lazyloadThrottleTimeout;
+  
+  function lazyload () {
+    if(lazyloadThrottleTimeout) {
+      clearTimeout(lazyloadThrottleTimeout);
+    }    
+    lazyloadThrottleTimeout = setTimeout(function() {
+        var scrollTop = window.pageYOffset;
+        // 스크롤 된 위치에 전체페이지 하단이 근접한 경우
+        if(window.innerHeight+scrollTop > document.documentElement.scrollHeight-window.innerHeight){
+            for(var i=0; i<dataPageLng; i++) lazyPrt(); // Page(?) 단위 분할출력
+        }
+        if(isDataPrtEnd){
+            document.removeEventListener("scroll", lazyload);
+            window.removeEventListener("resize", lazyload);
+            window.removeEventListener("orientationChange", lazyload);
+        }
+
+    }, 20);
+  }
+  
+  document.addEventListener("scroll", lazyload);
+  window.addEventListener("resize", lazyload);
+  window.addEventListener("orientationChange", lazyload);
+}
+
+// 템플릿 읽어서 롬정보 출력
+function putListTemplete(){
+    if(!data.length) {
+        bodyDiv.innerHTML = '결과없음';
+        return;
+    }
+
+    // 롬명으로 오름차순 정렬
+    data.sort(function(a, b)  {
+      if(a.name.toUpperCase() >   b.name.toUpperCase()) return  1;
+      if(a.name.toUpperCase() === b.name.toUpperCase()) return  0;
+      if(a.name.toUpperCase() <   b.name.toUpperCase()) return -1;
+    });
+
+    totalID.value = data.length.format();
+    bodyDiv.innerHTML = "<table border><tbody id='listTB'></tbody></table>"; // 초기화
+    // head 해더 출력
+    listTB.insertRow().innerHTML = rominfotemplatehead.innerText;
+
+    // body 출력
+    //data.forEach((item, idx)=>{        } // 한번에 출력 하려 했으나 검색결과가 너무 많아서 분할 출력을 선택함
+    dataCurrentIdx = 0;
+    dataMaxIndex = data.length;
+    isDataPrtEnd = false;
+    for(var i=0; i<dataPageLng; i++) lazyPrt(); // Page(?) 단위 분할출력
+    lazyRun();
+}
+// 조회
+function getList(){
+    var url = '/romlist';
+//    if(searchID.value) {
+        url += '?q='+encodeURIComponent(searchID.value)
+            +  '&sd='+encodeURIComponent(sdimage.value)
+            +  '&sid='+encodeURIComponent(system.value)
+            +  '&empty='+empty.value;
+//    }
+    contentLoaddingImg.show();
+    Ajax({
+        url:url,
+        onload:evt=>{
+            contentLoaddingImg.hide();
+            data = evt.target.responseText.toJSON();
+            //putList();
+            //putListText();
+            putListTemplete();
+        },
+    });
+}
+
+//sd 이미지 목록, 시스템 목록 가져옴
+//filelist 에 사용한 함수 재 사용함.
+function getSelectItems(id){
+    Ajax({
+        url:'/filelistselect?id='+id,
+        onload:evt=>{
+            var data = getJSON(evt);
+            var selObj = document.querySelector("#"+id);
+            selObj.options.length=1;
+            data.forEach(item=>{
+                selObj.options.add(new Option(item[id],item[id]))
+            })
+        }
+    });
+}
+// 롬 타이틀명 검색
+function search_v1(obj){
+    //console.log(obj.id)
+    if(obj.id == 'searchID') return;
+    //console.log(searchID.value);
+    console.log(!searchID.value, !sdimage.value, !system.value)
+    if(!searchID.value && !(sdimage.value && system.value)) return;
+    getList();
+}
+// 롬파일검색, gamelist.xml 정보보기 화면 이동용 링크보는 토글 함수
+function linkDivToggle(){
+    linkDiv.style.display = linkDiv.style.display?'':'none';
+}
+// sd이미지 선택시 해당이미지에 존재하는(롬 있는) 시스템 목록 불러옴
+function getSystems(){
+    if(sdimage.value){
+        Ajax({
+            url:'/systems?db=1&sd='+getSDImg(sdimage.value),
+            onload:evt=>{
+                var data = getJSON(evt);
+                var selObj = document.querySelector("#system");
+                selObj.options.length=1;
+                data.forEach(item=>{
+                    selObj.options.add( new Option(item.name+' ['+item.exists+'/'+item.count+']',item.name) )
+                })
+            },
+        });
+    }else{
+        getSelectItems('system');
+    }
+}
+// 페이지 로드 후 처리할 이벤트 정의
+window.addEventListener('load',()=>{
+    contentLoaddingImg.hide(); // 로딩중 이미지 숨김
+    //getList();
+    getSelectItems('sdimage'); // SD이미지 목록 불러오기
+    getSelectItems('system'); // 전체 system 목록 불러오기
+
+    // 페이지 로딩후 랜덤롬 20개 출력
+    contentLoaddingImg.show();
+    Ajax({
+        url:'/romlist?q=romliststart',
+        onload:evt=>{
+            contentLoaddingImg.hide();
+            data = evt.target.responseText.toJSON();
+            putListTemplete();
+        },
+    });
+
+});
+
+    </script>
+  </head>
+  <body>
+<div id="floating_area_header" class="floating_header fade_in">
+	<div class="inner">
+		<div class="area_search" role="search">
+			<form id="floatingSearchForm" action="" onsubmit="search_v1(this);return false;">
+				<fieldset>
+					<legend class="blind">검색</legend>
+					<div class="search_box">
+						<input type="text" id="searchID" name="SearchText" class="text_box" title="검색" autocomplete="off" onclick="search_v1(this);">
+						<!--<label id="this_blog_search_placeholder" for="this_blog_search" class="label_text_box" style="display: inline;">검색</label>-->
+						<div id="autocomplete_layer" class="autocomplete_layer" style="display: none">
+							<ul class="list_autocomplete">
+							</ul>
+						</div>
+                        <select name="sdimage" id="sdimage" onchange="getSystems()">
+                            <option value="" selected>All
+                        </select>
+                        <select name="system" id="system">
+                            <option value="" selected>All
+                        </select>
+                        <select name="empty" id="empty">
+                            <option value="">All
+                            <option value="false" selected>False
+                            <option value="true" >True
+                        </select>
+						<a href="#" id="this_blog_floating_search_btn" class="btn_search" aria-label="검색" role="button" tabindex="0" onclick="search_v1(this); return false;"><i class="icon_search sp_blog"></i></a>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+        <input type="text" id="totalID" />
+		<div class="area_category floating_area_btn_category_parent">
+			<a href="#" onclick="linkDivToggle();return false;" class="btn_category floating_area_btn_category" aria-label="카테고리 열기" role="button">
+						<span class="icon_category_group">
+							<i class="line"></i>
+							<i class="line"></i>
+							<i class="line"></i>
+						</span>
+				<i class="icon_category sp_blog"></i>
+			</a>
+		</div>
+	</div>
+</div>
+<div style="height:47px;">이거 안보임</div>
+<div id="contentLoaddingImg"><img src="/img/0013.gif" id='로딩중' /></div>
+
+<!-- 테스트 템플릿 -->
+<script type="text/template" id="testTmp">
+<tr>
+  <td align="center">${no}</td>
+  <td><a target="romdetail" href="/?sd=${sdimg}&amp;sid=${system}&amp;rom=${path}">${empty}</a></td>
+  <td><a target="romdetail" href="/?sd=${sdimg}&amp;sid=${system}&amp;rom=${path}">${system</a></td>
+  <td><a target="romdetail" href="/?sd=${sdimg}&amp;sid=${system}&amp;rom=${path}">${name}</a></td>
+  <td align="right"><a target="romdetail" href="/?sd=Batocera Plus - Emulador Jogos_128GB&amp;sid=mame&amp;rom=./tnzs.zip">441,358</a></td>
+  <td><a target="romdetail" href="/?sd=Batocera Plus - Emulador Jogos_128GB&amp;sid=mame&amp;rom=./tnzs.zip">./tnzs.zip</a></td><td><a target="romdetail" href="/?sd=Batocera Plus - Emulador Jogos_128GB&amp;sid=mame&amp;rom=./tnzs.zip">Batocera Plus - Emulador Jogos_128GB</a></td><td><a target="romdetail" href="/?sd=Batocera Plus - Emulador Jogos_128GB&amp;sid=mame&amp;rom=./tnzs.zip">Plataforma / Corre e Pula com rolagem</a></td>
+  <td><a target="romdetail" href="/?sd=Batocera Plus - Emulador Jogos_128GB&amp;sid=mame&amp;rom=./tnzs.zip">Taito</a></td>
+  <td><a target="romdetail" href="/?sd=Batocera Plus - Emulador Jogos_128GB&amp;sid=mame&amp;rom=./tnzs.zip">Taito</a></td>
+  <td><a target="romdetail" href="/?sd=Batocera Plus - Emulador Jogos_128GB&amp;sid=mame&amp;rom=./tnzs.zip">en</a></td>
+  <td><a target="romdetail" href="/?sd=Batocera Plus - Emulador Jogos_128GB&amp;sid=mame&amp;rom=./tnzs.zip">us</a></td>
+</tr>
+</script>
+
+<!-- 템플릿해더 -->
+<script type="text/template" id="rominfotemplatehead">
+        <tr>
+            <th>No.</td>
+            <th>Marquee</th>
+            <th>Image</th>
+            <tH>Info</tH>
+        </tr>
+</script>
+<!-- 템플릿바디 -->
+<script type="text/template" id="rominfotemplatebody">
+        <tr loading="lazy">
+            <td align="center">${no}</td>
+            <td align="center"><a target="romdetail" href="/?sd=${sdimg}&amp;sid=${system}&amp;rom=${path}">
+                    <img style="max-width:200px;max-height:200px;" loading="lazy"
+                     src="/share/roms/${system}/${marquee}?sd=${sdimgpath}"
+                     onerror="this.onerror=null;replaceIImg(this,${no});"></a></td>
+            <td align="center"><img style="max-width:200px;max-height:200px;" loading="lazy"
+                     src="/share/roms/${system}/${image}?sd=${sdimgpath}"
+                     onerror="this.onerror=null;replaceIImg(this,${no});"></td>
+
+            <td>
+                <div><h3>${name}</h3></div>
+                <div><img class="system_img" loading="lazy"
+                          src="${logo}"
+                          onerror="this.onerror=null;this.outerHTML='${system}'">
+                <font style="font-size:10px;">${path}</font><Br>
+                <input type="checkbox" name="empty" ${empty}>File Size : ${pathsize}<Br>
+                Genre : ${genre}</div>
+                <div></div>
+                <div>Developer : ${developer} / Publisher : ${publisher}</div>
+                <div>Releasedate : ${releasedate}</div>
+                <div>Players : ${players} / Region : ${region} / lang : ${lang}</div>
+                <div>SDImg: ${sdimg}</div>
+            </td>
+            <td>
+            </td>
+        </tr>
+</script>
+<div id="bodyDiv">
+    <table border><tbody id='listTB'></tbody></table>
+</div>
+<div id="footDiv"></div>
+<div id="linkDiv" style="display:none;">
+  <div><a href="/">gamelist.xml조회</a></div>
+  <div><a href="/file">롬파일명검색</a></div>
+  <div><a href="/rom">롬타이틀명검색</a></div>
+</div>
+  </body>
+</html>

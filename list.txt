@@ -1,0 +1,41 @@
+ Volume in drive E is Music8TB
+ Volume Serial Number is B0A9-C963
+
+ Directory of E:\Batocera
+
+2023-10-06  오후 07:42    <DIR>          .
+2023-10-06  오후 07:42    <DIR>          ..
+2023-10-01  오후 11:31    <DIR>          Batocera Plus - Emulador Jogos_128GB
+2023-10-06  오전 08:10    <JUNCTION>     Batocera-5.23-64GB-PC64_22_07_2019 [J:\iso\Game\Linux\Batocera-5.23-64GB-PC64_22_07_2019]
+2023-10-06  오전 08:11    <JUNCTION>     Batocera-V35-PC64-EspecialBase-64GB_03_09_2022 [J:\iso\Game\Linux\Batocera-V35-PC64-EspecialBase-64GB_03_09_2022]
+2023-10-06  오전 08:11    <JUNCTION>     batocera-v36-pc64-parceiros-64gb-22-04-2023 [J:\iso\Game\Linux\batocera-v36-pc64-parceiros-64gb-22-04-2023]
+2023-10-06  오전 08:09    <JUNCTION>     Batocera.5.25.Pi3b+-Roufna[128gb] [J:\iso\Game\Linux\Batocera.5.25.Pi3b+-Roufna[128gb]]
+2023-10-06  오전 08:10    <JUNCTION>     Batocera.PC.Light.Gun.2-RetroLizard[128-26] [J:\iso\Game\Linux\Batocera.PC.Light.Gun.2-RetroLizard[128-26]]
+2023-10-03  오전 10:27    <DIR>          Batocera_Especial_PC64_Parceiros_120GB_21_08_2023
+2023-10-03  오후 02:53    <DIR>          Batocera_Instaladores16GB
+2023-10-06  오전 11:23    <DIR>          BoredGameDad 256GB Super Clean Batocera
+2023-10-06  오후 12:03    <DIR>          logs
+2023-10-05  오전 10:37    <DIR>          node_modules
+2023-10-03  오후 08:19    <DIR>          SteamDeck.JoyStick
+2023-10-06  오후 01:46    <DIR>          [128gb]-Batocera.v34.Switch.PC-DLWang
+2023-10-04  오전 08:04    <DIR>          [256gb]-Batocera.PC.8600.Minimal.Spec-RetroLizard
+2023-10-06  오후 01:28    <DIR>          [256gb]-Batocera.PC.Vertical-RetroLizard
+2023-10-05  오전 06:22    <DIR>          [Pi4]BoredGameDad Super Clean Batocera v33[238-178GB]
+               0 File(s)              0 bytes
+              18 Dir(s)  634,808,430,592 bytes free
+Batocera Plus - Emulador Jogos_128GB
+Batocera-5.23-64GB-PC64_22_07_2019
+Batocera-V35-PC64-EspecialBase-64GB_03_09_2022
+batocera-v36-pc64-parceiros-64gb-22-04-2023
+Batocera.5.25.Pi3b+-Roufna[128gb]
+Batocera.PC.Light.Gun.2-RetroLizard[128-26]
+Batocera_Especial_PC64_Parceiros_120GB_21_08_2023
+Batocera_Instaladores16GB
+BoredGameDad 256GB Super Clean Batocera
+logs
+node_modules
+SteamDeck.JoyStick
+[128gb]-Batocera.v34.Switch.PC-DLWang
+[256gb]-Batocera.PC.8600.Minimal.Spec-RetroLizard
+[256gb]-Batocera.PC.Vertical-RetroLizard
+[Pi4]BoredGameDad Super Clean Batocera v33[238-178GB]

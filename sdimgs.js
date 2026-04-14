@@ -1,0 +1,26 @@
+var sdImages = [
+
+    {alias:'[7.5gb]Batocera.PC.8600.Minimal.Spec-RetroLizard'                       ,path:'E:/Batocera/[7.5gb][256gb]-Batocera.PC.8600.Minimal.Spec-RetroLizard', machineid:''},
+    {alias:'[16gb]Batocera Servidor Xerife Tech'                                    ,path:'E:/Batocera/Batocera 16GB - Servidor Xerife Tech'                    , machineid:''},
+    {alias:'[16gb]Batocera_Instaladores'                                            ,path:'E:/Batocera/Batocera_Instaladores16GB'                               , machineid:'a81a9351a432668d8fe3787e648e2787'},
+    {alias:'[23gb]R-Bat-128GB(Video없음)'                                           ,path:'E:/Batocera/[23gb]R-Bat-128GB'                                       , machineid:''},
+    {alias:'[26gb]Batocera.PC.Light.Gun.2-RetroLizard[128-26]'                      ,path:'E:/Batocera/Batocera.PC.Light.Gun.2-RetroLizard[128-26]'             , machineid:'691bc34a80f7473194b58bde632bb7b1'},
+    {alias:'[30gb]batocera_DVI'                                                     ,path:'E:/Batocera/batocera_DVI [29.8GB]'                                   , machineid:'cfc94e093d97ee922006d8bd6168a051'},
+    {alias:'[64gb]batocera-v36-pc64-parceiros-64gb-22-04-2023'                      ,path:'E:/Batocera/batocera-v36-pc64-parceiros-64gb-22-04-2023'             , machineid:'dd60ae36823160bb2038ae4a646a3bc8'},
+    {alias:'[64gb]Batocera-V35-PC64-EspecialBase-64GB_03_09_2022'                   ,path:'E:/Batocera/Batocera-V35-PC64-EspecialBase-64GB_03_09_2022'          , machineid:'5e930f5fc0e15c7dde8e5865630fbbd0'},
+    {alias:'[120gb]Batocera_Especial_PC64_Parceiros_21_08_2023'                     ,path:'E:/Batocera/Batocera_Especial_PC64_Parceiros_120GB_21_08_2023'       , machineid:'f8743b08c71d2b9ae28286f16406943b'},
+    {alias:'[64gb]Batocera-5.23-PC64_22_07_2019(Video만있음)'                       ,path:'E:/Batocera/Batocera-5.23-64GB-PC64_22_07_2019'                      , machineid:''},
+    {alias:'Batocera-V38-Parceiros-PC64-16GB_21_10_2023'                            ,path:'E:/Batocera/Batocera-V38-Parceiros-PC64-16GB_21_10_2023'             , machineid:'bfeb3e7a32126971f818cd7e65304905'},
+    {alias:'Batocera-V38-Parceiros-PC64-64GB_21_10_2023'                            ,path:'E:/Batocera/Batocera-V38-Parceiros-PC64-64GB_21_10_2023'             , machineid:'bfeb3e7a32126971f818cd7e65304905'},
+    {alias:'[128gb]Batocera Plus - Emulador Jogos'                                  ,path:'E:/Batocera/Batocera Plus - Emulador Jogos_128GB'                    , machineid:''},
+    {alias:'[128gb]Batocera.v34.Switch.PC-DLWang'                                   ,path:'E:/Batocera/[128gb]-Batocera.v34.Switch.PC-DLWang'                   , machineid:'debfb45c511d727794348de1621a738b'},
+    {alias:'[256gb]Batocera.PC.8600.Minimal.Spec-RetroLizard'                       ,path:'E:/Batocera/[256gb]-Batocera.PC.8600.Minimal.Spec-RetroLizard'       , machineid:'98032531f8b2bff4283ab7c1618dda42'},
+    {alias:'[256gb]Batocera.PC.Vertical-RetroLizard'                                ,path:'E:/Batocera/[256gb]-Batocera.PC.Vertical-RetroLizard'                , machineid:'d3e8bc26122a40a01039ad9e50eea02d'},
+    {alias:'[256gb]Batocera.Steam.Deck-DereksPixeltorium'                           ,path:'E:/Batocera/[256gb]-Batocera.Steam.Deck-DereksPixeltorium'           , machineid:'51e86b2c22ba89628c968cf5633e453a'},
+    {alias:'[512gb]-Steam.Deck.Batocera-RetroGamingGuy'                             ,path:'E:/Batocera/[512gb]-Steam.Deck.Batocera-RetroGamingGuy'              , machineid:'2e3b8a9e0a7152d0cd68962a63c3b560'},
+    {alias:'[Pi3b-16]Gaming.Collection.Batocera.5.29-Clebinho'                      ,path:'E:/Batocera/[16gb]-Gaming.Collection.Batocera.5.29-Clebinho'         , machineid:''},
+    {alias:'[Pi3b+][128gb]v5.25-Roufna'                                             ,path:'E:/Batocera/Batocera.5.25.Pi3b+-Roufna[128gb]'                       , machineid:''},
+    {alias:'[Pi4-256]BoredGameDad Super Clean Batocera'                             ,path:'E:/Batocera/[Pi4]BoredGameDad 256GB Super Clean Batocera'            , machineid:''},
+    {alias:'[Pi4-256]BoredGameDad Super Clean Batocera v33[238-178GB]'              ,path:'E:/Batocera/[Pi4]BoredGameDad Super Clean Batocera v33[238-178GB]'   , machineid:'8d0c2956ae3046a946d1a69112cea610'},
+  ];
+

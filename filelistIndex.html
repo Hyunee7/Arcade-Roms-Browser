@@ -1,0 +1,447 @@
+<html>
+  <head>
+    <title>파일목록_DB기반</title>
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0,minimum-scale=1.0, maximum-scale=1.0,user-scalable=yes" />
+    <meta charset="UTF-8" />
+    <style>
+.floating_header.fade_in {
+    top: 0;
+}
+.floating_header {
+    position: fixed;
+    top: -47px;
+    left: 0;
+    right: 0;
+    height: 46px;
+    background: #fff;
+    border-bottom: 1px solid #c2c2c2;
+    z-index: 2000;
+    transition: all .3s cubic-bezier(.215,.61,.355,1);
+}
+.floating_header .inner {
+    position: relative;
+    padding: 14px 0 14px 20px;
+}
+.floating_header .inner:after, .floating_bottom .inner:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+.floating_header .area_search {
+    position: absolute;
+    top: 5px;
+    /*right: 46px;*/
+}
+.floating_header .search_box .label_text_box {
+    position: absolute;
+    top: 0;
+    left: 9px;
+    font-size: 13px;
+    line-height: 34px;
+    letter-spacing: -.8px;
+    color: #999;
+    cursor: text;
+}
+.floating_header .search_box .btn_search {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 14px;
+    padding: 0 10px;
+    background: #fff;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select {
+    margin: 0;
+    padding: 0;
+}
+form {
+    display: block;
+    margin-top: 0em;
+    margin-block-end: 1em;
+}
+.floating_header .area_search fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.blind {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+}
+.floating_header .search_box .text_box {
+    width: 199px;
+    height: 34px;
+    /*margin: 0 34px 0 0;*/
+    padding: 0;
+    font-size: 13px;
+    color: #000;
+    text-indent: 10px;
+    outline: 0;
+    cursor: text;
+    border: 0;
+}
+.floating_header .search_box .icon_search {
+    background-position: -91px -4px;
+    width: 16px;
+    height: 16px;
+    margin-top: 9px;
+}
+.sp_blog {
+    background-image: url(https://ssl.pstatic.net/static/blog/sp_pcblog9.png);
+    background-image: url(https://ssl.pstatic.net/static/blog/sp_pcblog9.svg),none;
+    vertical-align: middle;
+}
+.sp_blog, .floating_header .area_logo .link_naver, .floating_header .area_logo .link_blog, .floating_header .area_logo .icon_bar {
+    display: inline-block;
+    overflow: hidden;
+    font-size: 1px;
+    line-height: 100px;
+}
+i {
+    font-style: italic;
+}
+a:link {
+    text-decoration: none;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+html body, html button, html input, html select, html table, html textarea {
+    font-family: Helvetica-Light,"나눔고딕",nanumgothic,AppleSDGothicNeo,"malgun gothic","맑은 고딕",sans-serif;
+}
+input[type="text" i] {
+    padding-block: 1px;
+    padding-inline: 2px;
+}
+input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" i]) {
+}
+user agent stylesheet
+input {
+    font-style: ;
+    font-variant-ligatures: ;
+    font-variant-caps: ;
+    font-variant-numeric: ;
+    font-variant-east-asian: ;
+    font-variant-alternates: ;
+    font-variant-position: ;
+    font-weight: ;
+    font-stretch: ;
+    font-size: ;
+    font-family: ;
+    font-optical-sizing: ;
+    font-kerning: ;
+    font-feature-settings: ;
+    font-variation-settings: ;
+    text-rendering: auto;
+    color: fieldtext;
+    letter-spacing: normal;
+    word-spacing: normal;
+    line-height: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    appearance: auto;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+    background-color: field;
+    writing-mode: horizontal-tb !important;
+    margin: 0em;
+    padding: 1px 0px;
+    border-width: 2px;
+    border-style: inset;
+    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+    border-image: initial;
+    padding-block: 1px;
+    padding-inline: 2px;
+}
+.floating_header .search_box {
+    border: 1px solid #e0e0e0;
+    position: relative;
+    font-family: "나눔고딕",NanumGothic,NanumGothicWebFont,"Malgun Gothic","맑은 고딕",Dotum,"돋움",Helvetica,"Apple SD Gothic Neo",sans-serif;
+    transition: all .2s cubic-bezier(.215,.61,.355,1);
+}
+.floating_header .area_category {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 46px;
+    height: 46px;
+}
+.floating_header .btn_category {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.floating_header .icon_category_group {
+    display: inline-block;
+    width: 14px;
+    margin-top: 14px;
+    text-align: left;
+}
+.floating_header .btn_category {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.floating_header .icon_category_group .line:nth-child(1) {
+    transform: rotate(0) translate(0,0);
+    -ms-transform: rotate(0) translate(0,0);
+}
+.floating_header .icon_category_group .line {
+    display: inline-block;
+    margin-top: 3px;
+    width: 14px;
+    height: 2px;
+    background: #555;
+    transform-origin: center;
+    transition: all .2s cubic-bezier(.215,.61,.355,1);
+}
+.floating_header .autocomplete_layer {
+    overflow: hidden;
+    position: absolute;
+    top: 34px;
+    left: -1px;
+    width: 233px;
+    max-height: 317px;
+    border: 1px solid #aaa;
+    border-top: 0;
+}
+/*****************************************************/
+#contentLoaddingImg {
+    width:100%;
+    height:100%;
+    position: relative;
+}
+#contentLoaddingImg img{
+    position:absolute;
+    /*중앙 정렬*/
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+}
+#listTB td {
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space:nowrap;
+}
+#ext {
+    margin-right: 34px;
+}
+    body {
+        /** /
+        overflow:hidden;
+        /**/
+        background-color: #444444;
+        color:#aaaaaa;
+    }
+    div#bodyDiv table, th, td {
+        /*border:1px solid black;*/
+        /*padding:0px;*/
+        border-spacing:0px 0px;
+        border-collapse:collapse;
+        border-color:#555555;
+    }
+    div#bodyDiv table, th{
+        position: sticky;
+        top: 46px;
+        background-color: #444;
+        height:23px;
+    }
+    div#bodyDiv table tr:nth-child(even) {background: #444}
+    div#bodyDiv table tr:nth-child(odd) {background: #555}
+    div#bodyDiv table tr:hover { background-color: #777; }
+    a {
+        color:#aaaaaa;
+    }
+    div#linkDiv {
+        position: absolute;
+        right: 3;
+        top: 50;
+        width: 130px;
+        background-color: #333;
+    }
+    div#linkDiv div{
+        height:30px;
+        margin-top:5px;
+        margin-left:5px;
+        cursor:point;
+    }
+
+    </style>
+    <script src="lib.js"></script>
+    <script>
+var data={};
+function getJSON(evt){
+    return evt.target.responseText.toJSON();
+}
+function putList(){
+    if(!data.length) {
+        bodyDiv.innerHTML = '결과없음';
+        return;
+    }
+    var html = '<table border id="listTB">';
+    // colgroup
+    html += '<colgroup>';
+    html += '<col align="right"></col>';
+    for( var key in data[0] ){
+        if(typeof data[0][key] === 'function') continue;
+        html += (key=='size')?'<col align="right"></col>':'<col></col>';
+    }
+    html += '</colgroup>';
+    // header
+    html += '<tr>';
+//    html += '<td></td>';
+    html += '<th>No.</th>';
+    for( var key in data[0] ){
+        if(typeof data[0][key] === 'function') continue;
+        html += `<th>${key}</th>`;
+    }
+    html += '</tr>';
+
+    var aTmp = '<a href="/?sd=SDIMG&sid=SYSTEM&rom=./ROM">TITLE</a>';
+    data.forEach((item, idx)=>{
+        html += '<tr>';
+        var anchor = aTmp.replace('SDIMG' , item.sdimage)
+                         .replace('SYSTEM', item.system)
+                         .replace('ROM'   , item.name)
+        html += `<td align="center">${(idx+1)}</td>`;
+        for( var key in item ){
+            if(typeof item[key] === 'function') return;
+            //html += `<td>${item[key]}</td>`;
+            var val = (key=='size')?item[key].format():item[key];
+            var content = anchor.replace('TITLE', val);
+            var align=(key=='size')?' align="right"':'';
+            html += `<td${align}>${content}</td>`;
+        }
+        html += '</tr>';
+    });
+    html+='</table>';
+    bodyDiv.innerHTML = html;
+}
+function getList(){
+    var url = '/filelist';
+    if(searchID.value) {
+        url += '?q='+encodeURIComponent(searchID.value)
+            +  '&sd='+encodeURIComponent(sdimage.value)
+            +  '&sid='+encodeURIComponent(system.value)
+            +  '&ext='+encodeURIComponent(ext.value);
+    }
+    contentLoaddingImg.show();
+    Ajax({
+        url:url,
+        onload:evt=>{
+            contentLoaddingImg.hide();
+            //console.log('evt:',evt);
+            //console.log('evt.responseText:',evt.target.responseText);
+            data = evt.target.responseText.toJSON();
+            putList();
+        },
+    });
+}
+function getSelectItems(id){
+    Ajax({
+        url:'/filelistselect?id='+id,
+        onload:evt=>{
+            var data = getJSON(evt);
+            var selObj = document.querySelector("#"+id);
+            selObj.options.length=1;
+            data.forEach(item=>{
+                selObj.options.add(new Option(item[id],item[id]))
+            })
+        }
+    });
+}
+function search_v1(obj){
+    //console.log(obj.id)
+    if(obj.id == 'searchID') return;
+    //console.log(searchID.value);
+    if(!searchID.value) return;
+    getList();
+}
+function linkDivToggle(){
+    linkDiv.style.display = linkDiv.style.display?'':'none';
+}
+window.addEventListener('load',()=>{
+    contentLoaddingImg.hide();
+    //getList();
+    getSelectItems('sdimage');
+    getSelectItems('system');
+    getSelectItems('ext');
+});
+    </script>
+  </head>
+  <body>
+<div id="floating_area_header" class="floating_header fade_in">
+	<div class="inner">
+		<div class="area_search" role="search">
+			<form id="floatingSearchForm" action="" onsubmit="search_v1(this);return false;">
+				<fieldset>
+					<legend class="blind">검색</legend>
+					<div class="search_box">
+						<input type="text" id="searchID" name="SearchText" class="text_box" title="검색" autocomplete="off" onclick="search_v1(this);">
+						<!--<label id="this_blog_search_placeholder" for="this_blog_search" class="label_text_box" style="display: inline;">검색</label>-->
+						<div id="autocomplete_layer" class="autocomplete_layer" style="display: none">
+							<ul class="list_autocomplete">
+							</ul>
+						</div>
+                        <select name="sdimage" id="sdimage">
+                            <option value="" selected>All
+                        </select>
+                        <select name="system" id="system">
+                            <option value="" selected>All
+                        </select>
+                        <select name="ext" id="ext">
+                            <option value="" selected>All
+                        </select>
+						<a href="#" id="this_blog_floating_search_btn" class="btn_search" aria-label="검색" role="button" tabindex="0" onclick="search_v1(this); return false;"><i class="icon_search sp_blog"></i></a>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="area_category floating_area_btn_category_parent">
+			<a href="#" onclick="linkDivToggle();return false;" class="btn_category floating_area_btn_category" aria-label="카테고리 열기" role="button">
+						<span class="icon_category_group">
+							<i class="line"></i>
+							<i class="line"></i>
+							<i class="line"></i>
+						</span>
+				<i class="icon_category sp_blog"></i>
+			</a>
+		</div>
+	</div>
+</div>
+<div style="height:47px;">이거 안보임</div>
+<div id="contentLoaddingImg"><img src="/img/0013.gif" id='로딩중' /></div>
+
+<script type="text/template" id="recommend_blogteam">
+<table>
+  <tr>
+    <td></td>
+  </tr>
+</table>
+</script>
+
+<div id="bodyDiv">2</div>
+<div id="linkDiv" style="display:none;">
+  <div><a href="/">gamelist.xml조회</a></div>
+  <div><a href="/file">롬파일명검색</a></div>
+  <div><a href="/rom">롬타이틀명검색</a></div>
+</div>
+  </body>
+</html>
