@@ -94,10 +94,10 @@ TESTGRID.setColumsInfo = () => {
 }
 
 // 실행
-//$(function(){
-//    TESTGRID.init();
-//})
-
-window:onload=function(){
+$(function(){
     TESTGRID.init();
-}
+})
+
+//window:onload=function(){
+//    TESTGRID.init();
+//}

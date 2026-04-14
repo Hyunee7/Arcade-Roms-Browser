@@ -55,7 +55,7 @@
 		rowHeaders: [{
                     type: 'rowNum',
                     header: "-",
-                    width: 10,
+                    width: 40,
                 }],
         //bodyHeight: 200,
 		rowHeight: 'auto',

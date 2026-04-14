@@ -993,6 +993,7 @@ function webService(request, response) {
             else if(_url=='/rom'         ) _file='node/romlistIndex.html';  // 롬목록 조회화면
             else if(_url=='/test.js'     ) _file='node/grid/test.js';
             else if(_url=='/testGrid.js' ) _file='node/grid/testGrid.js';
+            else if(_url=='/gamelistGrid.js' ) _file='node/grid/gamelistGrid.js';
             else _file = (_url.indexOf('es-theme-carbon')>0?__dirname:imgRoot) + decodeURIComponent(queryData.pathname);
             //response.sendFile(_file);  
 			//console.log('_file:',_file);

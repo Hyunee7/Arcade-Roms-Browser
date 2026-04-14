@@ -32,8 +32,8 @@ TEST.gridSet = () => {
 }
 
 // 실행
-//$(function(){
-window:onload = function(){
-//	console.log('^^*');
+$(function(){
+//window:onload = function(){
+	console.log('^^*');
     TEST.init();
-}
+})

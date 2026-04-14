@@ -770,12 +770,12 @@ window.addEventListener('load',()=>{
 			var top = $(v).offset().top + gamelistTDTop;
 //			var top = $(v).offset().top - gamelistTDTop;
 			if(top < 0 || top > gamelistTDHeight){
-				if(top < 0){
+				/*if(top < 0){
 					console.log('Min index', i);
 				}
 				if(top > gamelistTDHeight){
 					console.log('Max index', i);
-				}
+				}*/
 				v.style.height = v.offsetHeight;
 				//if(v.innerHTML) gamelistHtml[i] = String(v.innerHTML);
 				//v.innerHTML = '';
