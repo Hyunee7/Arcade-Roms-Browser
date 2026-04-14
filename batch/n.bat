@@ -1,0 +1,1 @@
+F:\util\node-v13.14.0-win-x64\node e:\batocera\node\gamelist.js %1 %2
