@@ -1,22 +1,26 @@
 @echo off
 set SYSTEM=
+set SDIMAGE=
 SETLOCAL EnableExtensions DisableDelayedExpansion
 
-::½Ã½ºÅÛ¸íÃßÃâ
+::SDì´ë¯¸ì§€ëª… ì¶”ì¶œ
+call::getsdimage ..\..\..
+::echo %SDIMAGE%
+::ì‹œìŠ¤í…œëª…ì¶”ì¶œ
 call:getsystemid .
 ::echo %SYSTEM%
 
-::µğ·ºÅä¸® ¾øÀ¸¸é ¸¸µê
-if exist G:\share\roms\%SYSTEM% (
-  echo %SYSTEM%ÀÖÀ½
-) else (
-  echo %SYSTEM%¾øÀ½
-  mkdir G:\share\roms\%SYSTEM%
-)
+::ë””ë ‰í† ë¦¬ ì—†ìœ¼ë©´ ë§Œë“¦
+if not exist G:\share\roms\%SYSTEM% mkdir G:\share\roms\%SYSTEM%
 
 ::for /f "tokens=*" %A in ('dir /b /a-l *.zip') do \Batocera\rommv.bat snes "%A"
 for /f "tokens=*" %%A in ('dir /b /a-l *.%1') do call:filemove %SYSTEM% "%%A"
 
+goto :end
+
+:getsdimage
+set SDIMAGE=%~n1%~x1
+exit /b 0
 goto :end
 
 :getsystemid
@@ -25,6 +29,8 @@ exit /b 0
 goto :end
 
 :filemove
+set SRCSIZE=
+set TRGSIZE=
 SETLOCAL EnableExtensions DisableDelayedExpansion
 ::echo %1
 ::echo "%2"
@@ -38,12 +44,50 @@ set "romfile=%tmp1:"=%"
 ::echo system : arcadesystem
 ::echo romfile : %romfile%
 ::echo target : G:\share\roms\%arcadesystem%\%romfile%
+::  call:filesize "%romfile%"
+::  call:filesize "g:\share\roms\%arcadesystem%\%romfile%"
 if exist "G:\share\roms\%arcadesystem%\%romfile%" (
-  echo "G:\share\roms\%arcadesystem%\%romfile%" ÀÖÀ½.
+  echo "G:\share\roms\%arcadesystem%\%romfile%" Exists!.
+  call:compare "%romfile%" "g:\share\roms\%arcadesystem%\%romfile%"
 ) else (
-echo  move "%romfile%" "G:\share\roms\%arcadesystem%\%romfile%"
-echo  mklink "%romfile%" "G:\share\roms\%arcadesystem%\%romfile%"
+  move "%romfile%" "G:\share\roms\%arcadesystem%\%romfile%"
+  mklink "%romfile%" "G:\share\roms\%arcadesystem%\%romfile%"
 )
 exit /b 0
+
+:filesize
+echo     %~z1 %1
+exit /b 0
+
+:srcsize
+set SRCSIZE=%~z1
+exit /b 0
+
+:trgsize
+set TRGSIZE=%~z1
+exit /b 0
+
+:compare
+SETLOCAL EnableExtensions DisableDelayedExpansion
+::ìš©ëŸ‰ì¶”ì¶œ
+set SRCSIZE=%~z1
+set TRGSIZE=%~z2
+::íŒŒì¼ëª…ì—"ì œê±°
+set tmp3=%1
+set tmp4=%2
+set "src=%tmp3:"=%"
+set "trg=%tmp4:"=%"
+
+if %SRCSIZE% EQU %TRGSIZE% (
+  echo %SRCSIZE% : %TRGSIZE% = Same!
+  ren "%src%" "%src%_"
+  mklink "%src%" "%trg%"
+  del /q "%src%_"
+) else (
+  echo %SRCSIZE% : %TRGSIZE% = Dist.!!
+  echo %SDIMAGE% %SYSTEM% 
+)
+exit /b 0
+
 
 :end
